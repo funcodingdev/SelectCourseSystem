@@ -40,6 +40,7 @@ public class StudentDaoImpl implements IStudentDao {
             stu.setImage(rs.getString("s_image"));
             studentList.add(stu);
         }
+
         return studentList;
     }
 
@@ -66,6 +67,7 @@ public class StudentDaoImpl implements IStudentDao {
         stu.setDepartment(rs.getString("s_department"));
         stu.setPhone(rs.getString("s_phone"));
         stu.setImage(rs.getString("s_image"));
+        JDBCUtil.closeConn(conn,psmt,rs);
         return stu;
     }
 
@@ -85,7 +87,9 @@ public class StudentDaoImpl implements IStudentDao {
         psmt.setString(7,stu.getsClass());
         psmt.setString(8,stu.getDepartment());
         psmt.setString(9,stu.getPhone());
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -105,7 +109,9 @@ public class StudentDaoImpl implements IStudentDao {
         psmt.setString(7,stu.getDepartment());
         psmt.setString(8,stu.getPhone());
         psmt.setString(9,stu.getId());
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -116,7 +122,9 @@ public class StudentDaoImpl implements IStudentDao {
         conn = JDBCUtil.getConn();
         psmt = conn.prepareStatement(sql);
         psmt.setString(1,id);
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -132,8 +140,10 @@ public class StudentDaoImpl implements IStudentDao {
         psmt.execute();
         rs = psmt.getResultSet();
         if(rs.next()){
+            JDBCUtil.closeConn(conn,psmt,rs);
             return true;
         }
+        JDBCUtil.closeConn(conn,psmt,rs);
         return false;
     }
 }

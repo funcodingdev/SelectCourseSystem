@@ -18,10 +18,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="${ctx}/layui/layui.js"></script>
+    <script src="${ctx}/res/js/jquery.min.js"></script>
     <link rel="stylesheet" href="${ctx}/layui/css/layui.css">
 </head>
 <body>
 <form class="layui-form" action="${ctx}/TeacherServlet?action=updateTeacher" method="post">
+    <div>
+        <h1 style="color: red;text-align: center">${error}</h1>
+    </div>
     <div class="layui-form-item" style="text-align: center">
         <div class="layui-input-block">
             <img src="${ctx}/res/image/headphoto/man.png">
@@ -51,8 +55,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">性别</label>
         <div class="layui-input-block">
-            <input type="radio" name="sex" value="男" title="男">
-            <input type="radio" name="sex" value="女" title="女" checked>
+            <input type="radio" name="sex" value="男" title="男" ${teacher.sex=="男" ? "checked='checked'" : ""}>
+            <input type="radio" name="sex" value="女" title="女" ${teacher.sex=="女" ? "checked='checked'" : ""}>
         </div>
     </div>
     <div class="layui-form-item">
@@ -65,8 +69,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">身份</label>
         <div class="layui-input-block">
-            <input type="text" name="identity" class="layui-input" required lay-verify="required" placeholder="请输入身份"
-                   autocomplete="off" value="${teacher.identity}"/>
+            <select id="identity" name="identity" lay-verify="required">
+                <option value="">请选择</option>
+                <option value="教授">教授</option>
+                <option value="副教授">副教授</option>
+                <option value="讲师">讲师</option>
+                <option value="助教">助教</option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item">
@@ -83,6 +92,9 @@
         form.on('submit(loginForm)', function (data) {
             return true;
         });
+    });
+    $(function () {
+        $("#identity option[value=${teacher.identity}]").prop("selected", true);
     });
 </script>
 </body>

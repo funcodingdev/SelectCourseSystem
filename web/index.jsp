@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-    <h1 style="text-align: center">选课管理系统</h1>
+    <h1 style="text-align: center">欢迎${role}${obj.name}登陆选课管理系统</h1>
 </body>
 </html>

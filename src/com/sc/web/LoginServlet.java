@@ -1,5 +1,8 @@
 package com.sc.web;
 
+import com.sc.domain.Admin;
+import com.sc.domain.Student;
+import com.sc.domain.Teacher;
 import com.sc.service.IAdminService;
 import com.sc.service.IStudentService;
 import com.sc.service.ITeacherService;
@@ -27,12 +30,16 @@ public class LoginServlet extends BaseServlet {
 //        System.out.println(username+","+password+","+role);
         String invoke = null;
         String basePath = request.getContextPath();
+        Object loginObj = null;//登陆对象
+        HttpSession session = request.getSession();
         switch (role){
             case "0":{//学生
                 IStudentService studentService = ServiceFactory.getStudentService();
                 boolean having = studentService.findStudent(username, password);
                 if(having){//登陆成功
                     invoke = REDIRECE+":"+basePath+"/student/student.jsp";
+                    loginObj  = studentService.getStudent(username);
+                    session.setAttribute("role","学生");
                 }
                 break;
             }
@@ -41,6 +48,8 @@ public class LoginServlet extends BaseServlet {
                 boolean having = teacherService.findTeacher(username, password);
                 if(having){
                     invoke = REDIRECE+":"+basePath+"/teacher/teacher.jsp";
+                    loginObj  = teacherService.getTeacher(username);
+                    session.setAttribute("role","教师");
                 }
                 break;
             }
@@ -49,17 +58,18 @@ public class LoginServlet extends BaseServlet {
                 boolean having = adminService.findAdmin(username, password);
                 if(having){
                     invoke = REDIRECE+":"+basePath+"/admin/admin.jsp";
+                    loginObj  = adminService.getAdmin(username);
+                    session.setAttribute("role","管理员");
                 }
                 break;
             }
         }
         if(invoke == null){//验证失败
-            request.setAttribute("error","用户名或密码错误");
-            request.setAttribute("username",username);
+            request.setAttribute("error","用户名或密码错误！");
+            request.setAttribute("name",username);
             invoke = DISPATCHER+":"+"/login.jsp";
         }else{//验证成功
-            HttpSession session = request.getSession();
-            session.setAttribute("username",username);
+            session.setAttribute("obj",loginObj);
         }
         return invoke;
     }

@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sc.dao.DaoFactory;
+import com.sc.domain.Department;
+import com.sc.domain.SClass;
 import com.sc.domain.Student;
 import com.sc.service.IStudentService;
 import com.sc.service.ServiceFactory;
@@ -39,6 +41,7 @@ public class StudentServlet extends BaseServlet {
         if(studentService.deleteStudent(id)){
             return DISPATCHER+":"+"/StudentServlet?action=getAllStudent";
         }
+        request.setAttribute("error","删除失败！");
         return DISPATCHER +":"+"/admin/studentInfo.jsp";
     }
 
@@ -48,6 +51,10 @@ public class StudentServlet extends BaseServlet {
         Student stu = studentService.getStudent(id);
         if(stu != null){
             request.setAttribute("stu",stu);
+            List<Department> allDepartment = ServiceFactory.getDepartmentService().getAllDepartment();
+            request.setAttribute("allDepartment",allDepartment);
+            List<SClass> allSClass = ServiceFactory.getSClassService().getAllSClass(stu.getDepartment());
+            request.setAttribute("allSClass",allSClass);
             return DISPATCHER+":"+"/admin/updateStudent.jsp";
         }
         return DISPATCHER +":"+"/admin/studentInfo.jsp";
@@ -67,16 +74,33 @@ public class StudentServlet extends BaseServlet {
         if(studentService.updateStudent(stu)){
             return DISPATCHER+":"+"/StudentServlet?action=getAllStudent";
         }
+        request.setAttribute("error","更新失败！");
         return DISPATCHER+":"+"/admin/updateStudent.jsp";
     }
 
     public String insertStudentUi(HttpServletRequest request,HttpServletResponse response){
-
+        List<Department> allDepartment = ServiceFactory.getDepartmentService().getAllDepartment();
+        request.setAttribute("allDepartment",allDepartment);
         return DISPATCHER+":"+"/admin/insertStudent.jsp";
     }
 
     public String insertStudent(HttpServletRequest request,HttpServletResponse response){
-        return null;
+        studentService = ServiceFactory.getStudentService();
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String sex = request.getParameter("sex");
+        String age = request.getParameter("age");
+        String sClass = request.getParameter("sclass");
+        String dept = request.getParameter("department");
+        String phone = request.getParameter("phone");
+        String password = request.getParameter("password");
+        Student stu = new Student(id,name,sex,Integer.valueOf(age),sClass,dept,phone,password,"man.png");
+//        System.out.println(stu.toString());
+        if(studentService.insertStudent(stu)){
+            return DISPATCHER+":"+"/StudentServlet?action=getAllStudent";
+        }
+        request.setAttribute("error","插入失败！");
+        return DISPATCHER+":"+"/StudentServlet?action=insertStudentUi";
     }
 
 }

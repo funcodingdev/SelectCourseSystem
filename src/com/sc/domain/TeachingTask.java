@@ -7,12 +7,21 @@ package com.sc.domain;
  */
 public class TeachingTask {
     private String teachingTaskNum;//教学任务号
-    private String courseNum;//课程号
+    private String courseName;//课程名
     private String teacherNum;//教师编号
+    private String teacherName;//教师姓名
     private String location;//上课地点
     private Integer totalNum;//选课人数
 
     public TeachingTask() {
+    }
+
+    public TeachingTask(String teachingTaskNum, String courseName, String teacherNum, String location, Integer totalNum) {
+        this.teachingTaskNum = teachingTaskNum;
+        this.courseName = courseName;
+        this.teacherNum = teacherNum;
+        this.location = location;
+        this.totalNum = totalNum;
     }
 
     public String getTeachingTaskNum() {
@@ -23,12 +32,12 @@ public class TeachingTask {
         this.teachingTaskNum = teachingTaskNum;
     }
 
-    public String getCourseNum() {
-        return courseNum;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCourseNum(String courseNum) {
-        this.courseNum = courseNum;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public String getTeacherNum() {
@@ -37,6 +46,14 @@ public class TeachingTask {
 
     public void setTeacherNum(String teacherNum) {
         this.teacherNum = teacherNum;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     public String getLocation() {
@@ -59,8 +76,9 @@ public class TeachingTask {
     public String toString() {
         return "TeachingTask{" +
                 "teachingTaskNum='" + teachingTaskNum + '\'' +
-                ", courseNum='" + courseNum + '\'' +
+                ", courseName='" + courseName + '\'' +
                 ", teacherNum='" + teacherNum + '\'' +
+                ", teacherName='" + teacherName + '\'' +
                 ", location='" + location + '\'' +
                 ", totalNum=" + totalNum +
                 '}';

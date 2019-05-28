@@ -22,6 +22,9 @@
 </head>
 <body>
 <form class="layui-form" action="${ctx}/CourseServlet?action=updateCourse" method="post">
+    <div>
+        <h1 style="color: red;text-align: center">${error}</h1>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">课程号</label>
         <div class="layui-input-block">

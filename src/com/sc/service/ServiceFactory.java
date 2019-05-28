@@ -1,11 +1,9 @@
 package com.sc.service;
 
 import com.sc.dao.ICourseDao;
+import com.sc.dao.ITeachingTaskDao;
 import com.sc.dao.impl.CourseDaoImpl;
-import com.sc.service.impl.AdminServiceImpl;
-import com.sc.service.impl.CourseServiceImpl;
-import com.sc.service.impl.StudentServiceImpl;
-import com.sc.service.impl.TeacherServiceImpl;
+import com.sc.service.impl.*;
 
 /**
  * @Author: fangju
@@ -23,5 +21,19 @@ public class ServiceFactory {
     }
     public static ICourseService getCourseService(){
         return new CourseServiceImpl();
+    }
+    public static ITeachingTaskService getTeachingTaskService(){
+        return new TeachingTaskServiceImpl();
+    }
+    public static IDepartmentService getDepartmentService(){
+        return new DepartmentServiceImpl();
+    }
+
+    public static ISClassService getSClassService() {
+        return new SClassServiceImpl();
+    }
+
+    public static ISelectCourseService getSelectCourseService() {
+        return new SelectCourseServiceImpl();
     }
 }

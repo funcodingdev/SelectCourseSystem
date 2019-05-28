@@ -50,6 +50,7 @@ public class TeacherServlet extends BaseServlet {
         if(teacherService.updateTeacher(teacher)){
             return DISPATCHER+":"+"/TeacherServlet?action=getAllTeacher";
         }
+        request.setAttribute("error","更新失败！");
         return DISPATCHER+":"+"/admin/updateTeacher.jsp";
     }
 
@@ -59,10 +60,28 @@ public class TeacherServlet extends BaseServlet {
         if(teacherService.deleteTeacher(id)){
             return DISPATCHER+":"+"/TeacherServlet?action=getAllTeacher";
         }
+        request.setAttribute("error","删除失败！");
         return DISPATCHER +":"+"/admin/teacherInfo.jsp";
     }
 
+    public String insertTeacherUi(HttpServletRequest request,HttpServletResponse response){
+        return DISPATCHER+":"+"/admin/insertTeacher.jsp";
+    }
+
     public String insertTeacher(HttpServletRequest request,HttpServletResponse response){
-        return null;
+        teacherService = ServiceFactory.getTeacherService();
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String sex = request.getParameter("sex");
+        String age = request.getParameter("age");
+        String identity = request.getParameter("identity");
+        String password = request.getParameter("password");
+        Teacher teacher = new Teacher(id,name,sex,Integer.parseInt(age),identity,password,null);
+//        System.out.println(teacher.toString());
+        if(teacherService.insertTeacher(teacher)){
+            return DISPATCHER+":"+"/TeacherServlet?action=getAllTeacher";
+        }
+        request.setAttribute("error","插入失败！");
+        return DISPATCHER+":"+"/admin/insertTeacher.jsp";
     }
 }

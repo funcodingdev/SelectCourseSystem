@@ -3,10 +3,7 @@ package com.sc.dao;
 import com.sc.dao.IAdminDao;
 import com.sc.dao.IStudentDao;
 import com.sc.dao.ITeacherDao;
-import com.sc.dao.impl.AdminDaoImpl;
-import com.sc.dao.impl.CourseDaoImpl;
-import com.sc.dao.impl.StudentDaoImpl;
-import com.sc.dao.impl.TeacherDaoImpl;
+import com.sc.dao.impl.*;
 
 /**
  * @Author: fangju
@@ -24,5 +21,19 @@ public class DaoFactory {
     }
     public static ICourseDao getCourseDao(){
         return new CourseDaoImpl();
+    }
+    public static ITeachingTaskDao getTeachingTaskDao(){
+        return new TeachingTaskDaoImpl();
+    }
+    public static IDepartmentDao getDepartmentDao(){
+        return new DepartmentDaoImpl();
+    }
+
+    public static ISClassDao getSClassDao() {
+        return new SClassDaoImpl();
+    }
+
+    public static ISelectCourseDao getSelectCourseDao(){
+        return new SelectCourseDaoImpl();
     }
 }

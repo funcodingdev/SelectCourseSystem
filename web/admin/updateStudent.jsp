@@ -18,10 +18,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="${ctx}/layui/layui.js"></script>
+    <script src="${ctx}/res/js/jquery.min.js"></script>
     <link rel="stylesheet" href="${ctx}/layui/css/layui.css">
 </head>
 <body>
 <form class="layui-form" action="${ctx}/StudentServlet?action=updateStudent" method="post">
+    <div>
+        <h1 style="color: red;text-align: center">${error}</h1>
+    </div>
     <div class="layui-form-item" style="text-align: center">
         <div class="layui-input-block">
             <img src="${ctx}/res/image/headphoto/man.png">
@@ -52,7 +56,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">性别</label>
         <div class="layui-input-block">
-            <input type="radio" name="sex" value="男" title="男" ${stu.sex=="男" ? "checked='checked'" : ""} >
+            <input type="radio" name="sex" value="男" title="男" ${stu.sex=="男" ? "checked='checked'" : ""}>
             <input type="radio" name="sex" value="女" title="女" ${stu.sex=="女" ? "checked='checked'" : ""}>
         </div>
     </div>
@@ -66,21 +70,29 @@
     <div class="layui-form-item">
         <label class="layui-form-label">院系</label>
         <div class="layui-input-block">
-            <input type="text" name="department" class="layui-input" required lay-verify="required" placeholder="请输入院系"
-                   autocomplete="off" value="${stu.department}"/>
+            <select id="department" name="department" required lay-verify="required">
+                <option value="">请选择</option>
+                <c:forEach items="${allDepartment}" var="department">
+                    <option value="${department.name}">${department.name}</option>
+                </c:forEach>
+            </select>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">班级</label>
         <div class="layui-input-block">
-            <input type="text" name="sClass" class="layui-input" required lay-verify="required" placeholder="请输入班级"
-                   autocomplete="off" value="${stu.sClass}"/>
+            <select id="sClass" name="sClass" required lay-verify="required">
+                <option value=""></option>
+                <c:forEach items="${allSClass}" var="sclass">
+                    <option value="${sclass.name}">${sclass.name}</option>
+                </c:forEach>
+            </select>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">手机号</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" class="layui-input" required lay-verify="required" placeholder="请输入手机号"
+            <input type="number" name="phone" class="layui-input" placeholder="请输入手机号"
                    autocomplete="off" value="${stu.phone}"/>
         </div>
     </div>
@@ -99,6 +111,12 @@
             return true;
         });
     });
+
+    $(function () {
+        $("#department option[value=${stu.department}]").prop("selected", true);
+        $("#sClass option[value=${stu.sClass}]").prop("selected", true);
+    });
+
 </script>
 </body>
 </html>

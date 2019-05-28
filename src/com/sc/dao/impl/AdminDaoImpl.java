@@ -35,6 +35,7 @@ public class AdminDaoImpl implements IAdminDao {
             admin.setImage(rs.getString("a_image"));
             adminList.add(admin);
         }
+        JDBCUtil.closeConn(conn,st,rs);
         return adminList;
     }
 
@@ -58,6 +59,7 @@ public class AdminDaoImpl implements IAdminDao {
         admin.setSex(rs.getString("a_sex"));
         admin.setAge(rs.getInt("a_age"));
         admin.setImage(rs.getString("a_image"));
+        JDBCUtil.closeConn(conn,psmt,rs);
         return admin;
     }
 
@@ -74,7 +76,9 @@ public class AdminDaoImpl implements IAdminDao {
         psmt.setString(4,admin.getSex());
         psmt.setInt(5,admin.getAge());
         psmt.setString(6,admin.getImage());
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -90,7 +94,9 @@ public class AdminDaoImpl implements IAdminDao {
         psmt.setInt(4,admin.getAge());
         psmt.setString(5,admin.getImage());
         psmt.setString(6,admin.getId());
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -101,7 +107,9 @@ public class AdminDaoImpl implements IAdminDao {
         conn = JDBCUtil.getConn();
         psmt = conn.prepareStatement(sql);
         psmt.setString(1,id);
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -117,8 +125,10 @@ public class AdminDaoImpl implements IAdminDao {
         psmt.execute();
         rs = psmt.getResultSet();
         if(rs.next()){
+            JDBCUtil.closeConn(conn,psmt,rs);
             return true;
         }
+        JDBCUtil.closeConn(conn,psmt,rs);
         return false;
     }
 }

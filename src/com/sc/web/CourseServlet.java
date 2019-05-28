@@ -63,4 +63,20 @@ public class CourseServlet extends BaseServlet {
         return DISPATCHER +":"+"/admin/courseInfo.jsp";
     }
 
+    public String insertCourse(HttpServletRequest request,HttpServletResponse response){
+        courseService = ServiceFactory.getCourseService();
+        String number = request.getParameter("number");
+        String name = request.getParameter("name");
+        String credit = request.getParameter("credit");
+        String period = request.getParameter("period");
+        String theory = request.getParameter("theory");
+        String experiment = request.getParameter("experiment");
+        Course course = new Course(number,name,Integer.parseInt(credit),
+                Integer.parseInt(period),Integer.parseInt(theory),Integer.parseInt(experiment));
+        if(courseService.insertCourse(course)){
+            return DISPATCHER+":"+"/CourseServlet?action=getAllCourse";
+        }
+        request.setAttribute("error","插入失败！");
+        return DISPATCHER +":"+"/admin/insertCourse.jsp";
+    }
 }

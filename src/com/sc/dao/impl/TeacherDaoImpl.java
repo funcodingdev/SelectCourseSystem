@@ -37,6 +37,7 @@ public class TeacherDaoImpl implements ITeacherDao {
             teacher.setImage(rs.getString("t_image"));
             teacherList.add(teacher);
         }
+        JDBCUtil.closeConn(conn,st,rs);
         return teacherList;
     }
 
@@ -61,6 +62,7 @@ public class TeacherDaoImpl implements ITeacherDao {
         teacher.setAge(rs.getInt("t_age"));
         teacher.setIdentity(rs.getString("t_identity"));
         teacher.setImage(rs.getString("t_image"));
+        JDBCUtil.closeConn(conn,psmt,rs);
         return teacher;
     }
 
@@ -68,7 +70,7 @@ public class TeacherDaoImpl implements ITeacherDao {
     public int insertTeacher(Teacher teacher) throws SQLException {
         Connection conn = null;
         PreparedStatement psmt = null;
-        String sql = "insert into teacher(t_id,t_password,t_name,t_sex,t_age,t_image,s_identity) values(?,?,?,?,?,?,?)";
+        String sql = "insert into teacher(t_id,t_password,t_name,t_sex,t_age,t_image,t_identity) values(?,?,?,?,?,?,?)";
         conn = JDBCUtil.getConn();
         psmt = conn.prepareStatement(sql);
         psmt.setString(1,teacher.getId());
@@ -78,7 +80,9 @@ public class TeacherDaoImpl implements ITeacherDao {
         psmt.setInt(5,teacher.getAge());
         psmt.setString(6,teacher.getImage());
         psmt.setString(7,teacher.getIdentity());
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -96,7 +100,9 @@ public class TeacherDaoImpl implements ITeacherDao {
         psmt.setString(5,teacher.getImage());
         psmt.setString(6,teacher.getIdentity());
         psmt.setString(7,teacher.getId());
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -107,7 +113,9 @@ public class TeacherDaoImpl implements ITeacherDao {
         conn = JDBCUtil.getConn();
         psmt = conn.prepareStatement(sql);
         psmt.setString(1,id);
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -123,8 +131,10 @@ public class TeacherDaoImpl implements ITeacherDao {
         psmt.execute();
         rs = psmt.getResultSet();
         if(rs.next()){
+            JDBCUtil.closeConn(conn,psmt,rs);
             return true;
         }
+        JDBCUtil.closeConn(conn,psmt,rs);
         return false;
     }
 }

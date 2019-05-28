@@ -47,7 +47,7 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="${ctx}/res/image/headphoto/man.png" class="layui-nav-img"> ${username}
+                    <img src="${ctx}/res/image/headphoto/man.png" class="layui-nav-img"> ${obj.name}
                 </a>
                 <dl class="layui-nav-child">
                     <dd>
@@ -66,21 +66,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item">
-                    <a class="" href="javascript:;">教学计划</a>
-                    <dl class="layui-nav-child">
-                        <dd>
-                            <a href="javascript:;">查看教学计划</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:;">添加教学计划</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:;">修改教学计划</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:;">删除教学计划</a>
-                        </dd>
-                    </dl>
+                    <a href="${ctx}/TeachingTaskServlet?action=getAllTeachingTask" target="mainFrame">教学计划</a>
                 </li>
                 <li class="layui-nav-item">
                     <a href="${ctx}/TeacherServlet?action=getAllTeacher" target="mainFrame">教师信息</a>

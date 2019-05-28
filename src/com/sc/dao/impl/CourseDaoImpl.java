@@ -35,6 +35,7 @@ public class CourseDaoImpl implements ICourseDao {
             course.setExperiment(rs.getInt("c_experiment"));
             courseList.add(course);
         }
+        JDBCUtil.closeConn(conn,st,rs);
         return courseList;
     }
 
@@ -57,6 +58,7 @@ public class CourseDaoImpl implements ICourseDao {
         course.setPeriod(rs.getInt("c_period"));
         course.setTheory(rs.getInt("c_theory"));
         course.setExperiment(rs.getInt("c_experiment"));
+        JDBCUtil.closeConn(conn,psmt,rs);
         return course;
     }
 
@@ -73,7 +75,9 @@ public class CourseDaoImpl implements ICourseDao {
         psmt.setInt(4,course.getPeriod());
         psmt.setInt(5,course.getTheory());
         psmt.setInt(6,course.getExperiment());
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -89,7 +93,9 @@ public class CourseDaoImpl implements ICourseDao {
         psmt.setInt(4,course.getTheory());
         psmt.setInt(5,course.getExperiment());
         psmt.setString(6,course.getNumber());
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 
     @Override
@@ -100,6 +106,8 @@ public class CourseDaoImpl implements ICourseDao {
         conn = JDBCUtil.getConn();
         psmt = conn.prepareStatement(sql);
         psmt.setString(1,number);
-        return psmt.executeUpdate();
+        int i = psmt.executeUpdate();
+        JDBCUtil.closeConn(conn,psmt,null);
+        return i;
     }
 }

@@ -24,9 +24,9 @@
 </head>
 <body>
 <div>
-    <button class="layui-btn">
+    <a href="${ctx}/TeacherServlet?action=insertTeacherUi" class="layui-btn" id="insertBtn">
         <i class="layui-icon">&#xe608;</i> 添加
-    </button>
+    </a>
 </div>
 <table class="layui-table" lay-even lay-skin="row" lay-size="lg" style="text-align: center">
     <colgroup>
