@@ -1,6 +1,7 @@
 package com.sc.dao;
 
 import com.sc.domain.Course;
+import com.sc.domain.Student;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,4 +16,6 @@ public interface ICourseDao {
     int insertCourse(Course course) throws SQLException;//插入课程
     int updateCourse(Course course) throws SQLException;//更新课程
     int deleteCourse(String number) throws SQLException;//删除课程
+    List<Course> getPageData(Integer start, Integer end) throws SQLException;
+    int getCourseCount() throws SQLException;
 }

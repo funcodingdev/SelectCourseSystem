@@ -2,6 +2,7 @@ package com.sc.dao.impl;
 
 import com.sc.dao.ITeachingTaskDao;
 import com.sc.domain.SelectCourse;
+import com.sc.domain.Teacher;
 import com.sc.domain.TeachingTask;
 import com.sc.util.JDBCUtil;
 
@@ -41,7 +42,7 @@ public class TeachingTaskDaoImpl implements ITeachingTaskDao {
     }
 
     @Override
-    public List<TeachingTask> getAllTeachingTaskExcept(String stuId) throws SQLException {
+    public List<TeachingTask> getAllTeachingTaskExceptHave(String stuId) throws SQLException {
         List<TeachingTask> teachingTaskList = null;
         Connection conn = null;
         PreparedStatement psmt = null;
@@ -63,6 +64,32 @@ public class TeachingTaskDaoImpl implements ITeachingTaskDao {
             teachingTask.setTeacherName(rs.getString("T_NAME"));
             teachingTaskList.add(teachingTask);
         }
+        return teachingTaskList;
+    }
+
+    @Override
+    public List<TeachingTask> getAllTeachingTaskToTea(String teacherId) throws SQLException {
+        List<TeachingTask> teachingTaskList = null;
+        Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs = null;
+        String sql = "select * from teachingTask where tt_teacherNum = ?";
+        conn = JDBCUtil.getConn();
+        psmt = conn.prepareStatement(sql);
+        psmt.setString(1,teacherId);
+        psmt.execute();
+        rs = psmt.getResultSet();
+        teachingTaskList = new ArrayList<>();
+        while (rs.next()){
+            TeachingTask teachingTask = new TeachingTask();
+            teachingTask.setTeachingTaskNum(rs.getString("TT_TEACHINGTASKNUM"));
+            teachingTask.setCourseName(rs.getString("TT_COURSENAME"));
+            teachingTask.setTeacherNum(rs.getString("TT_TEACHERNUM"));
+            teachingTask.setLocation(rs.getString("TT_LOCATION"));
+            teachingTask.setTotalNum(rs.getInt("TT_TOTALNUM"));
+            teachingTaskList.add(teachingTask);
+        }
+        JDBCUtil.closeConn(conn,psmt,rs);
         return teachingTaskList;
     }
 
@@ -133,6 +160,49 @@ public class TeachingTaskDaoImpl implements ITeachingTaskDao {
         int i = psmt.executeUpdate();
         JDBCUtil.closeConn(conn,psmt,null);
         return i;
+    }
+
+    @Override
+    public List<TeachingTask> getPageData(Integer start, Integer end) throws SQLException {
+        List<TeachingTask> teachingTaskList = null;
+        Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs= null;
+        String sql = "SELECT * FROM(SELECT ROWNUM NO,s.* FROM (SELECT * FROM teachingTask ORDER BY TT_TEACHINGTASKNUM ASC) s WHERE ROWNUM<=?) WHERE NO >=?";
+        conn = JDBCUtil.getConn();
+        psmt = conn.prepareStatement(sql);
+        psmt.setInt(2,start);
+        psmt.setInt(1,end);
+        psmt.execute();
+        rs = psmt.getResultSet();
+        teachingTaskList = new ArrayList<>();
+        while (rs.next()){
+            TeachingTask teachingTask = new TeachingTask();
+            teachingTask.setTeachingTaskNum(rs.getString("TT_TEACHINGTASKNUM"));
+            teachingTask.setCourseName(rs.getString("TT_COURSENAME"));
+            teachingTask.setTeacherNum(rs.getString("TT_TEACHERNUM"));
+            teachingTask.setLocation(rs.getString("TT_LOCATION"));
+            teachingTask.setTotalNum(rs.getInt("TT_TOTALNUM"));
+            teachingTaskList.add(teachingTask);
+        }
+        JDBCUtil.closeConn(conn,psmt,rs);
+        return teachingTaskList;
+    }
+
+    @Override
+    public int geTeachingTaskCount() throws SQLException {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs= null;
+        conn = JDBCUtil.getConn();
+        st = conn.createStatement();
+        String sql = "select count(*) as total from teachingTask";
+        st.execute(sql);
+        rs = st.getResultSet();
+        rs.next();
+        int totalNum = rs.getInt("total");
+        JDBCUtil.closeConn(conn,st,rs);
+        return totalNum;
     }
 
 }

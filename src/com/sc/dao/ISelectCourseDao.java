@@ -10,7 +10,8 @@ import java.util.List;
  * @Date: 2019/5/28 15:03
  */
 public interface ISelectCourseDao {
-    List<SelectCourse> getSelectCourse(String stuId) throws SQLException;
+    List<SelectCourse> getSelectCourseByStuId(String stuId) throws SQLException;
+    List<SelectCourse> getSelectCourseByTTNum(String teachingTaskNum) throws SQLException;
     int insertSelectCourse(SelectCourse selectCourse) throws SQLException;
     int deleteSelectCourse(SelectCourse selectCourse) throws SQLException;
 }

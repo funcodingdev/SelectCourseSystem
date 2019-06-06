@@ -10,6 +10,7 @@ public class SelectCourse {
     private String teachingTaskNum;//教学任务号信息
     private Double grade;//成绩
     private TeachingTask teachingTask;
+    private Student student;
 
     public SelectCourse() {
     }
@@ -50,6 +51,14 @@ public class SelectCourse {
 
     public void setTeachingTask(TeachingTask teachingTask) {
         this.teachingTask = teachingTask;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     @Override

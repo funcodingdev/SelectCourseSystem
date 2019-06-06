@@ -20,7 +20,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="${ctx}/layui/layui.js"></script>
+    <script src="${ctx}/res/js/jquery.min.js"></script>
+    <script src="${ctx}/res/js/paging.js"></script>
     <link rel="stylesheet" href="${ctx}/layui/css/layui.css">
+    <link rel="stylesheet" href="${ctx}/res/css/pageStyle.css">
 </head>
 <body>
 <div>
@@ -46,7 +49,7 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${allCourse}" var="course">
+    <c:forEach items="${pageBean.list}" var="course">
         <tr>
             <th>${course.number}</th>
             <th>${course.name}</th>
@@ -62,5 +65,20 @@
     </c:forEach>
     </tbody>
 </table>
+<!--分页-->
+<div id="page" class="page_div">
+
+</div>
+<script>
+    //分页
+    $("#page").paging({
+        pageNo:${pageBean.currentPage},
+        totalPage: ${pageBean.totalPage},
+        totalSize: ${pageBean.totalCount},
+        callback: function(num) {
+            $(window).attr('location',"${pageContext.request.contextPath }/CourseServlet?action=getAllCourse&currentPage="+num);
+        }
+    });
+</script>
 </body>
 </html>

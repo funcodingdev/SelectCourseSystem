@@ -18,7 +18,7 @@ public class BaseServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
         String action = request.getParameter("action");
-        System.out.println("action="+action);
+//        System.out.println("action="+action);
         if (action == null) {
             throw new RuntimeException("action为null");
         }

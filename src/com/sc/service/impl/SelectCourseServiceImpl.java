@@ -16,10 +16,21 @@ public class SelectCourseServiceImpl implements ISelectCourseService {
     private ISelectCourseDao selectCourseDao;
 
     @Override
-    public List<SelectCourse> getSelectCourse(String stuId) {
+    public List<SelectCourse> getSelectCourseByStuId(String stuId) {
         selectCourseDao = DaoFactory.getSelectCourseDao();
         try {
-            return selectCourseDao.getSelectCourse(stuId);
+            return selectCourseDao.getSelectCourseByStuId(stuId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<SelectCourse> getSelectCourseByTTNum(String teachingTaskNum) {
+        selectCourseDao = DaoFactory.getSelectCourseDao();
+        try {
+            return selectCourseDao.getSelectCourseByTTNum(teachingTaskNum);
         } catch (SQLException e) {
             e.printStackTrace();
         }

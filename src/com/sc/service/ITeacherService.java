@@ -1,5 +1,7 @@
 package com.sc.service;
 
+import com.sc.domain.PageBean;
+import com.sc.domain.Student;
 import com.sc.domain.Teacher;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface ITeacherService {
     boolean updateTeacher(Teacher teacher);//修改教师信息
     boolean deleteTeacher(String id);//删除教师
     boolean findTeacher(String username, String password);//查询是否有该教师
+    PageBean<Teacher> getPageBean(Integer currentPage);
+    int getTeacherCount();
 }

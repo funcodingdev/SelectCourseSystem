@@ -10,7 +10,8 @@ import java.util.List;
  * @Date: 2019/5/28 15:03
  */
 public interface ISelectCourseService {
-    List<SelectCourse> getSelectCourse(String stuId);
+    List<SelectCourse> getSelectCourseByStuId(String stuId);
+    List<SelectCourse> getSelectCourseByTTNum(String teachingTaskNum);
     boolean insertSelectCourse(SelectCourse selectCourse);
     boolean deleteSelectCourse(SelectCourse selectCourse);
 }

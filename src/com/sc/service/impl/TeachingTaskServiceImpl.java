@@ -2,6 +2,7 @@ package com.sc.service.impl;
 
 import com.sc.dao.DaoFactory;
 import com.sc.dao.ITeachingTaskDao;
+import com.sc.domain.PageBean;
 import com.sc.domain.TeachingTask;
 import com.sc.service.ITeachingTaskService;
 
@@ -30,7 +31,18 @@ public class TeachingTaskServiceImpl implements ITeachingTaskService {
     public List<TeachingTask> getAllTeachingTaskExcept(String stuId) {
         teachingTaskDao = DaoFactory.getTeachingTaskDao();
         try {
-            return teachingTaskDao.getAllTeachingTaskExcept(stuId);
+            return teachingTaskDao.getAllTeachingTaskExceptHave(stuId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<TeachingTask> getAllTeachingTaskToTea(String teacherId) {
+        teachingTaskDao = DaoFactory.getTeachingTaskDao();
+        try {
+            return teachingTaskDao.getAllTeachingTaskToTea(teacherId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,5 +97,31 @@ public class TeachingTaskServiceImpl implements ITeachingTaskService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public PageBean<TeachingTask> getPageBean(Integer currentPage) {
+        teachingTaskDao = DaoFactory.getTeachingTaskDao();
+        PageBean<TeachingTask> pageBean = null;
+        try {
+            pageBean = new PageBean<>();
+            pageBean.setTotalCount(teachingTaskDao.geTeachingTaskCount());//设置总数量
+            pageBean.setCurrentPage(currentPage);//设置当前页
+            pageBean.setList(teachingTaskDao.getPageData(pageBean.getStart(),pageBean.getEnd()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pageBean;
+    }
+
+    @Override
+    public int getTeachingTaskCount() {
+        teachingTaskDao = DaoFactory.getTeachingTaskDao();
+        try {
+            return teachingTaskDao.geTeachingTaskCount();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

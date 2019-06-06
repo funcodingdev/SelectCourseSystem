@@ -4,6 +4,7 @@ import com.sc.dao.DaoFactory;
 import com.sc.dao.IStudentDao;
 import com.sc.domain.Student;
 import com.sc.service.IStudentService;
+import com.sc.domain.PageBean;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,6 +24,21 @@ public class StudentServiceImpl implements IStudentService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public PageBean<Student> getPageBean(Integer currentPage) {
+        studentDao = DaoFactory.getStudentDao();
+        PageBean<Student> pageBean = null;
+        try {
+            pageBean = new PageBean<>();
+            pageBean.setTotalCount(studentDao.getStudentCount());//设置总数量
+            pageBean.setCurrentPage(currentPage);//设置当前页
+            pageBean.setList(studentDao.getPageData(pageBean.getStart(),pageBean.getEnd()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pageBean;
     }
 
     @Override
@@ -84,5 +100,16 @@ public class StudentServiceImpl implements IStudentService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public int getStudentCount() {
+        studentDao = DaoFactory.getStudentDao();
+        try {
+            return studentDao.getStudentCount();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

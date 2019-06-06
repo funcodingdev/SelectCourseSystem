@@ -110,4 +110,48 @@ public class CourseDaoImpl implements ICourseDao {
         JDBCUtil.closeConn(conn,psmt,null);
         return i;
     }
+
+    @Override
+    public List<Course> getPageData(Integer start, Integer end) throws SQLException {
+        List<Course> courseList = null;
+        Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs= null;
+        String sql = "SELECT * FROM(SELECT ROWNUM NO,sc.* FROM (SELECT * FROM course ORDER BY c_number ASC) sc WHERE ROWNUM<=?) WHERE NO >=?";
+        conn = JDBCUtil.getConn();
+        psmt = conn.prepareStatement(sql);
+        psmt.setInt(2,start);
+        psmt.setInt(1,end);
+        psmt.execute();
+        rs = psmt.getResultSet();
+        courseList = new ArrayList<>();
+        while (rs.next()){
+            Course course = new Course();
+            course.setNumber(rs.getString("c_number"));
+            course.setName(rs.getString("c_name"));
+            course.setCredit(rs.getInt("c_credit"));
+            course.setPeriod(rs.getInt("c_period"));
+            course.setTheory(rs.getInt("c_theory"));
+            course.setExperiment(rs.getInt("c_experiment"));
+            courseList.add(course);
+        }
+        JDBCUtil.closeConn(conn,psmt,rs);
+        return courseList;
+    }
+
+    @Override
+    public int getCourseCount() throws SQLException {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs= null;
+        conn = JDBCUtil.getConn();
+        st = conn.createStatement();
+        String sql = "select count(*) as total from course";
+        st.execute(sql);
+        rs = st.getResultSet();
+        rs.next();
+        int totalNum = rs.getInt("total");
+        JDBCUtil.closeConn(conn,st,rs);
+        return totalNum;
+    }
 }

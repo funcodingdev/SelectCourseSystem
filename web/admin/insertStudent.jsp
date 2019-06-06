@@ -18,6 +18,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="${ctx}/layui/layui.js"></script>
+
     <link rel="stylesheet" href="${ctx}/layui/css/layui.css">
 </head>
 <body>
@@ -69,7 +70,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">院系</label>
         <div class="layui-input-block">
-            <select name="department" required lay-verify="required">
+            <select id="department" name="department" required lay-verify="required" lay-filter="department">
                 <option value="">请选择</option>
                 <c:forEach items="${allDepartment}" var="department">
                     <option value="${department.name}">${department.name}</option>
@@ -80,9 +81,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">班级</label>
         <div class="layui-input-block">
-            <select name="sclass" lay-verify="required">
+            <select id="sClass" name="sclass" lay-verify="required">
                 <option value=""></option>
-                <option value="软件162">软件162</option>
             </select>
         </div>
     </div>
@@ -101,13 +101,36 @@
 </form>
 
 <script>
-    layui.use('form', function () {
-        var form = layui.form;
+    layui.use(['layer', 'jquery', 'element', 'form'], function () {
+        var layer = layui.layer
+            , $ = layui.jquery
+            , element = layui.element
+            , form = layui.form;
         //监听提交
-        form.on('submit(loginForm)', function (data) {
-            return true;
+        form.on('select(department)', function (data) {
+            var department = $('#department').val();
+            $.ajax({
+                url: "<%=request.getContextPath()%>/SClassServlet?department=" + department,//请求地址
+                type: "POST",//请求方式
+                dataType: "json",//返回数据类型
+                contentType: "application/json",
+                async: false,//同步
+                success: function (result) {
+                    var data = result;
+                    var proHtml = '';
+                    for (var o in data) {
+                        proHtml += '<option value="' + data[o] + '">' + data[o] + '</option>';
+                    }
+                    $("#sClass").html(proHtml);
+                },
+                error: function () {
+                    alert("fail");
+                }
+            });
+            form.render('select');
         });
     });
+
 </script>
 </body>
 </html>

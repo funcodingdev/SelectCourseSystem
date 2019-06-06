@@ -1,5 +1,7 @@
 package com.sc.web;
 
+import com.sc.domain.PageBean;
+import com.sc.domain.Student;
 import com.sc.domain.Teacher;
 import com.sc.service.ITeacherService;
 import com.sc.service.ServiceFactory;
@@ -9,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,8 +25,13 @@ public class TeacherServlet extends BaseServlet {
 
     public String getAllTeacher(HttpServletRequest request,HttpServletResponse response){
         teacherService = ServiceFactory.getTeacherService();
-        List<Teacher> allTeacher = teacherService.getAllTeacher();
-        request.setAttribute("allTeacher",allTeacher);
+//        List<Teacher> allTeacher = teacherService.getAllTeacher();
+//        request.setAttribute("allTeacher",allTeacher);
+        String currentPage = request.getParameter("currentPage");
+        PageBean<Teacher> pageBean = teacherService.getPageBean(Integer.parseInt(currentPage));
+        request.setAttribute("pageBean", pageBean);
+        HttpSession session = request.getSession();
+        session.setAttribute("currentPage", Integer.parseInt(currentPage));
         return DISPATCHER+":"+"/admin/teacherInfo.jsp";
     }
 
@@ -48,7 +56,9 @@ public class TeacherServlet extends BaseServlet {
         Teacher teacher = new Teacher(id,name,sex,Integer.parseInt(age),identity,password,null);
         teacherService = ServiceFactory.getTeacherService();
         if(teacherService.updateTeacher(teacher)){
-            return DISPATCHER+":"+"/TeacherServlet?action=getAllTeacher";
+            HttpSession session = request.getSession();
+            int currentPage = (int) session.getAttribute("currentPage");
+            return DISPATCHER+":"+"/TeacherServlet?action=getAllTeacher&currentPage=" + currentPage;
         }
         request.setAttribute("error","更新失败！");
         return DISPATCHER+":"+"/admin/updateTeacher.jsp";
@@ -58,7 +68,14 @@ public class TeacherServlet extends BaseServlet {
         teacherService = ServiceFactory.getTeacherService();
         String id = request.getParameter("id");
         if(teacherService.deleteTeacher(id)){
-            return DISPATCHER+":"+"/TeacherServlet?action=getAllTeacher";
+            HttpSession session = request.getSession();
+            int currentPage = (int) session.getAttribute("currentPage");
+            int totalPage = PageBean.getTotalPage(teacherService.getTeacherCount());
+            int indexPage = currentPage;//索引页为当前页
+            if (currentPage >= totalPage) {
+                indexPage = totalPage;
+            }
+            return DISPATCHER+":"+"/TeacherServlet?action=getAllTeacher&currentPage="+indexPage;
         }
         request.setAttribute("error","删除失败！");
         return DISPATCHER +":"+"/admin/teacherInfo.jsp";
@@ -79,7 +96,7 @@ public class TeacherServlet extends BaseServlet {
         Teacher teacher = new Teacher(id,name,sex,Integer.parseInt(age),identity,password,null);
 //        System.out.println(teacher.toString());
         if(teacherService.insertTeacher(teacher)){
-            return DISPATCHER+":"+"/TeacherServlet?action=getAllTeacher";
+            return DISPATCHER+":"+"/TeacherServlet?action=getAllTeacher&currentPage=1";
         }
         request.setAttribute("error","插入失败！");
         return DISPATCHER+":"+"/admin/insertTeacher.jsp";

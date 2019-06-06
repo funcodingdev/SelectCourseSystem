@@ -146,4 +146,51 @@ public class StudentDaoImpl implements IStudentDao {
         JDBCUtil.closeConn(conn,psmt,rs);
         return false;
     }
+
+    @Override
+    public List<Student> getPageData(Integer start, Integer end) throws SQLException {
+        List<Student> studentList = null;
+        Connection conn = null;
+        PreparedStatement psmt = null;
+        ResultSet rs= null;
+        String sql = "SELECT * FROM(SELECT ROWNUM NO,s.* FROM (SELECT * FROM student ORDER BY s_id ASC) s WHERE ROWNUM<=?) WHERE NO >=?";
+        conn = JDBCUtil.getConn();
+        psmt = conn.prepareStatement(sql);
+        psmt.setInt(2,start);
+        psmt.setInt(1,end);
+        psmt.execute();
+        rs = psmt.getResultSet();
+        studentList = new ArrayList<>();
+        while (rs.next()){
+            Student stu = new Student();
+            stu.setId(rs.getString("s_id"));
+            stu.setPassword(rs.getString("s_password"));
+            stu.setName(rs.getString("s_name"));
+            stu.setSex(rs.getString("s_sex"));
+            stu.setAge(rs.getInt("s_age"));
+            stu.setsClass(rs.getString("s_class"));
+            stu.setDepartment(rs.getString("s_department"));
+            stu.setPhone(rs.getString("s_phone"));
+            stu.setImage(rs.getString("s_image"));
+            studentList.add(stu);
+        }
+        JDBCUtil.closeConn(conn,psmt,rs);
+        return studentList;
+    }
+
+    @Override
+    public int getStudentCount() throws SQLException {
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs= null;
+        conn = JDBCUtil.getConn();
+        st = conn.createStatement();
+        String sql = "select count(*) as total from student";
+        st.execute(sql);
+        rs = st.getResultSet();
+        rs.next();
+        int totalNum = rs.getInt("total");
+        JDBCUtil.closeConn(conn,st,rs);
+        return totalNum;
+    }
 }

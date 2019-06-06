@@ -2,6 +2,8 @@ package com.sc.service.impl;
 
 import com.sc.dao.DaoFactory;
 import com.sc.dao.ITeacherDao;
+import com.sc.domain.PageBean;
+import com.sc.domain.Student;
 import com.sc.domain.Teacher;
 import com.sc.service.ITeacherService;
 
@@ -84,5 +86,31 @@ public class TeacherServiceImpl implements ITeacherService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public PageBean<Teacher> getPageBean(Integer currentPage) {
+        teacherDao = DaoFactory.getTeacherDao();
+        PageBean<Teacher> pageBean = null;
+        try {
+            pageBean = new PageBean<>();
+            pageBean.setTotalCount(teacherDao.getTeacherCount());//设置总数量
+            pageBean.setCurrentPage(currentPage);//设置当前页
+            pageBean.setList(teacherDao.getPageData(pageBean.getStart(),pageBean.getEnd()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pageBean;
+    }
+
+    @Override
+    public int getTeacherCount() {
+        teacherDao = DaoFactory.getTeacherDao();
+        try {
+            return teacherDao.getTeacherCount();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

@@ -1,6 +1,7 @@
 package com.sc.service;
 
 import com.sc.domain.Course;
+import com.sc.domain.PageBean;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,4 +16,6 @@ public interface ICourseService {
     boolean insertCourse(Course course);//插入课程
     boolean updateCourse(Course course);//更新课程
     boolean deleteCourse(String number);//删除课程
+    PageBean<Course> getPageBean(Integer currentPage);
+    int getStudentCount();
 }

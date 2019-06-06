@@ -6,13 +6,10 @@ import com.sc.domain.TeachingTask;
 import com.sc.service.ISelectCourseService;
 import com.sc.service.ServiceFactory;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -48,7 +45,7 @@ public class SelectCourseServlet extends BaseServlet {
         selectCourseService = ServiceFactory.getSelectCourseService();
         HttpSession session = request.getSession();
         Student student = (Student) session.getAttribute("obj");
-        List<SelectCourse> allSelectCourse = selectCourseService.getSelectCourse(student.getId());
+        List<SelectCourse> allSelectCourse = selectCourseService.getSelectCourseByStuId(student.getId());
         request.setAttribute("allSelectCourse",allSelectCourse);
         return DISPATCHER+":"+"/student/retireCourse.jsp";
     }
@@ -63,6 +60,14 @@ public class SelectCourseServlet extends BaseServlet {
             return DISPATCHER+":"+"/SelectCourseServlet?action=retireCourseUi";
         }
         return DISPATCHER+":"+"/SelectCourseServlet?action=retireCourseUi";
+    }
+
+    public String showStuInfoByTTNum(HttpServletRequest request, HttpServletResponse response){
+        selectCourseService = ServiceFactory.getSelectCourseService();
+        String teachingTaskNum = request.getParameter("teachingTaskNum");
+        List<SelectCourse> allSelectCourse = selectCourseService.getSelectCourseByTTNum(teachingTaskNum);
+        request.setAttribute("allSelectCourse",allSelectCourse);
+        return DISPATCHER+":"+"/teacher/studentInfo.jsp";
     }
 
 }

@@ -57,4 +57,24 @@ public class StudentDaoImplTest {
         }
         System.out.println(false);
     }
+
+    @Test
+    public void getStudentCount() {
+        try {
+            int count = DaoFactory.getStudentDao().getStudentCount();
+            System.out.println(count);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getPageData() {
+        try {
+            List<Student> pageData = DaoFactory.getStudentDao().getPageData(10, 20);
+            System.out.println(pageData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

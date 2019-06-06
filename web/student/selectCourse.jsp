@@ -51,7 +51,7 @@
             <th>${teachingTask.totalNum}</th>
             <th style="text-align: center">
                 <a href="${ctx}/SelectCourseServlet?action=selectCourse&teachingTaskNum=${teachingTask.teachingTaskNum}"><span
-                        class="layui-badge layui-bg-blue">选课</span></a>&nbsp;&nbsp;&nbsp;
+                        class="layui-badge layui-bg-blue">选课</span></a>
             </th>
         </tr>
     </c:forEach>

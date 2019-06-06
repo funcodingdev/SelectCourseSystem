@@ -66,16 +66,16 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item">
-                    <a href="${ctx}/TeachingTaskServlet?action=getAllTeachingTask" target="mainFrame">教学计划</a>
+                    <a href="${ctx}/TeachingTaskServlet?action=getAllTeachingTask&currentPage=1" target="mainFrame">教学计划</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="${ctx}/TeacherServlet?action=getAllTeacher" target="mainFrame">教师信息</a>
+                    <a href="${ctx}/TeacherServlet?action=getAllTeacher&currentPage=1" target="mainFrame">教师信息</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="${ctx}/StudentServlet?action=getAllStudent" target="mainFrame">学生信息</a>
+                    <a href="${ctx}/StudentServlet?action=getAllStudent&currentPage=1" target="mainFrame">学生信息</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="${ctx}/CourseServlet?action=getAllCourse" target="mainFrame">课程信息</a>
+                    <a href="${ctx}/CourseServlet?action=getAllCourse&currentPage=1" target="mainFrame">课程信息</a>
                 </li>
             </ul>
         </div>

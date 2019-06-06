@@ -3,6 +3,8 @@ package com.sc.service.impl;
 import com.sc.dao.DaoFactory;
 import com.sc.dao.ICourseDao;
 import com.sc.domain.Course;
+import com.sc.domain.PageBean;
+import com.sc.domain.Student;
 import com.sc.service.ICourseService;
 
 import java.sql.SQLException;
@@ -73,5 +75,31 @@ public class CourseServiceImpl implements ICourseService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public PageBean<Course> getPageBean(Integer currentPage) {
+        courseDao = DaoFactory.getCourseDao();
+        PageBean<Course> pageBean = null;
+        try {
+            pageBean = new PageBean<>();
+            pageBean.setTotalCount(courseDao.getCourseCount());//设置总数量
+            pageBean.setCurrentPage(currentPage);//设置当前页
+            pageBean.setList(courseDao.getPageData(pageBean.getStart(),pageBean.getEnd()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pageBean;
+    }
+
+    @Override
+    public int getStudentCount() {
+        courseDao = DaoFactory.getCourseDao();
+        try {
+            return courseDao.getCourseCount();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
